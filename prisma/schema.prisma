@@ -19,7 +19,7 @@ model User{
   profile_pic String? 
   nationalIDImage String?  
 	nationalID  String?
-  filename   String?
+  
 
 
 }
