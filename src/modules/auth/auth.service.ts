@@ -56,7 +56,7 @@ export class AuthService {
   }
   async signin(dto: AuthDto) {
     const email = dto.email.toString();
-    // try{}
+    try{
     // find the user by email
     const user = await this.prisma.user.findUnique({
       where: {
@@ -66,7 +66,7 @@ export class AuthService {
 
     // if user is not exist throw exception
     if (!user) {
-      throw new ForbiddenException('the user does not exist');
+      throw new CustomBadRequestException('the user does not exist');
     }
 
     // compare the password
@@ -75,10 +75,18 @@ export class AuthService {
       dto.password.toString(),
     );
     // if password incorrect throw exception
-    if (!pwMatches) throw new ForbiddenException(' incorrect password');
+    if (!pwMatches) throw new CustomBadRequestException(' incorrect password');
     // send back the user
 
     return this.signToken(user.id, user.email);
+  } catch (error) {
+    if (error instanceof CustomBadRequestException) {
+      throw error; // Re-throw the CustomBadRequestException
+    } else {
+      this.LoggerService.logError(error);
+      throw new InternalServerErrorException('Error creating user');
+    }
+  }
   }
   async signToken(
     userId: number,
