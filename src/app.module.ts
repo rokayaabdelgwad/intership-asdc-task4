@@ -6,11 +6,12 @@ import { UserService } from './modules/user/user.service';
 import { PrismaService } from './modules/prisma/prisma.service';
 import { LoggerModule } from './modules/logger/logger.module';
 import { StorageModule } from './modules/storage/storage.module';
+import { storageService } from './modules/storage/storage.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }),AuthModule,LoggerModule,StorageModule],
   controllers: [UserController],
-  providers: [UserService, PrismaService],
+  providers: [UserService, PrismaService,storageService],
 })
 export class AppModule {}

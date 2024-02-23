@@ -7,47 +7,61 @@ import { generateFilename } from "src/utils/imageUpload";
 import { MemoryStorageFile } from '@blazity/nest-file-fastify';
 import { CustomBadRequestException } from 'src/utils/custom.exceptions';
 import {  LoggerService } from 'src/modules/logger/logger.service';
-
+import * as multer from 'multer';
+import { NationalIDDto } from "../user/dto/nationalId.dto";
+// Set up Multer storage
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 @Injectable()
-export class ProfilePictureService {
-    constructor(private readonly loggerService: LoggerService){}
-    async uploadProfilePicture(file: MemoryStorageFile): Promise<string> {
-        const filename = generateFilename(file.fieldname);
-        const uploadPath = path.join(__dirname, '..', 'uploads', 'img', filename);
+
+export class storageService {
+    [x: string]: any;
+    constructor(private readonly prisma: PrismaService,private readonly loggerService: LoggerService){}
+
+    async uploadProfilePicture(file: MemoryStorageFile) {
+ const profile_pic = generateFilename(file.fieldname).toString();
         
+        const uploadPath = path.join(__dirname, '..', 'uploads', 'img', profile_pic);
+        const user = await this.prisma.user.create({
+          data:{
+           profile_pic
+          
+          }
+        })
         try {
             if (!fs.existsSync(path.dirname(uploadPath))) {
                 fs.mkdirSync(path.dirname(uploadPath), { recursive: true });
             }     
-            return filename;
+            return {'profile_pic':user.profile_pic};
         } catch (error) {
             this.loggerService.logError(error);
             throw new InternalServerErrorException('Error upload profile picture ');
         }
     }
-}
-// @Injectable()
-// export class NationalIdService {
-//     constructor(private prisma: PrismaService ,private readonly loggerService: LoggerService) { }
-//     async uploadNationalId(userId: number, file:MemoryStorageFile) {
-//         try {
-//             await this.prisma.user.update({
-//                 where: { id: userId },
-//                 data: { nationalIDImage: file }
-//             })
-//         } catch (error) {
-//             throw new Error(`Error uploading national ID image: ${error.message}`);
-//         }
-//     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    async uploadNationalIdImage(dto: NationalIDDto,file: MemoryStorageFile) {
 
-    // async getNationalId(userId: number): Promise<Buffer | null> {
-    //     try {
-    //         const user = await this.prisma.user.findUnique({
-    //             where: { id: userId },
-    //             select: { nationalIDImage: true },
-    //         })
-    //         return user?.nationalIDImage || null;
-    //     } catch (error) {
-    //         throw new Error(`Error retrieving national ID image: ${error.message}`);
-    //     }
-    // }}
+        const nationalIDImage = generateFilename(file.fieldname).toString();
+        const nationalID=dto.nationalID.toString()
+        const uploadPath = path.join(__dirname, '..', 'uploads', 'img', nationalIDImage);
+        const user = await this.prisma.user.create({
+          data:{
+            nationalID,
+            nationalIDImage
+          
+          }
+        })
+        try {
+            if (!fs.existsSync(path.dirname(uploadPath))) {
+                fs.mkdirSync(path.dirname(uploadPath), { recursive: true });
+            }     
+            return {'nationalID':user.nationalID,"nationalIDImage":user.nationalIDImage};
+        } catch (error) {
+            this.loggerService.logError(error);
+            throw new InternalServerErrorException('Error upload profile picture ');
+        }
+    }
+  
+
+}
+

@@ -39,6 +39,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "express-fileupload": "^1.4.3",
+    "file-type": "^19.0.0",
     "fs": "^0.0.1-security",
     "graphql-upload": "^16.0.2",
     "moment": "^2.30.1",

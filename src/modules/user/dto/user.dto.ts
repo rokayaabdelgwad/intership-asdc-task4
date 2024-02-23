@@ -1,23 +1,32 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsString,IsNumber, IsPositive, IsNotEmpty, IsEmail } from 'class-validator';
 
-export class UserDto {
-    constructor(email: string, password: string, firstName: string) {
+import { IsEmail, IsOptional, IsString } from 'class-validator';
+
+export class UpdateUserDto {
+    constructor(email: string,lastName:string ,firstName: string ){
         this.email = email;
-        this.password = password;
-        
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
-   
-    @ApiProperty({ example: 'user@example.com' })
-    @IsEmail()
-    @IsNotEmpty()
+
+    @IsEmail({}, { message: 'Email should be a valid email address' })
+    @IsOptional()
+    @IsString({ message: 'Email must be a string' })
     email: string;
 
-	@IsString()
-    @IsNotEmpty()
-    readonly password:string
+    @IsString({ message: 'First name must be a string' })
+    @IsOptional()
+     firstName: string;
+
+     @IsOptional()
+    @IsString({ message: 'Last name must be a string' })
+    lastName: string;
+
+
+ 
+
+}
+
 
 
     
-}
+
