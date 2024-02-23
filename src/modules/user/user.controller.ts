@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Delete,
+  UseGuards,
   Param,
   Body,
   UseInterceptors,
@@ -20,7 +21,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { NationalIDDto } from './dto/nationalId.dto';
 import { storageService } from '../storage/storage.service';
-
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
+import { User } from '@prisma/client';
+@UseGuards(JwtGuard)
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
@@ -28,7 +32,11 @@ export class UserController {
     private readonly userService: UserService,
     private readonly uploadImage: storageService,
   ) {}
-
+    
+  @Get('me')
+  getMe(@GetUser() user: User) {
+    return user;
+  }
   @Post('create-user')
   createUser(@Body() dot: UserDto) {
     return this.userService.createUser(dot);
