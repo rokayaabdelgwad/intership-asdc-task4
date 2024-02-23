@@ -3,10 +3,10 @@ import { PrismaService } from "../prisma/prisma.service";
 import { Injectable, InternalServerErrorException, NotFoundException, } from "@nestjs/common";
 import * as fs from 'fs';
 import * as path from 'path';
-import { generateFilename } from "src/utils/imageUpload";
+import { generateFilename } from '../../utils/imageUpload';
 import { MemoryStorageFile } from '@blazity/nest-file-fastify';
 import { CustomBadRequestException } from 'src/utils/custom.exceptions';
-import {  LoggerService } from 'src/modules/logger/logger.service';
+import {  LoggerService } from '../logger/logger.service';
 import * as multer from 'multer';
 import { NationalIDDto } from "../user/dto/nationalId.dto";
 // Set up Multer storage

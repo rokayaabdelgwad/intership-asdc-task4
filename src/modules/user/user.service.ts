@@ -8,12 +8,12 @@ import * as argon from 'argon2';
 import { UserDto } from './dto';
 import { User } from '@prisma/client';
 import { UpdateUserDto } from './dto/user.dto';
-import { CustomBadRequestException } from 'src/utils/custom.exceptions';
+import { CustomBadRequestException } from '../../utils/custom.exceptions';
 import * as fs from 'fs';
 import * as path from 'path';
 import { generateFilename } from '../../utils/imageUpload';
 import { MemoryStorageFile } from '@blazity/nest-file-fastify';
-import { LoggerService } from 'src/modules/logger/logger.service';
+import { LoggerService } from '../../modules/logger/logger.service';
 
 @Injectable()
 export class UserService {
