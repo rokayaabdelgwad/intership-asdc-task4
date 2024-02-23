@@ -1,4 +1,4 @@
-import { Controller, Get, Post,  Delete, Param, Body,   UseInterceptors,  UploadedFile, Patch } from '@nestjs/common';
+import { Controller, Get, Post,  Delete, Param, Body,   UseInterceptors,  UploadedFile, Patch, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -26,14 +26,14 @@ export class UserController {
       }),
     }),
   )
-  uploadNationalIdImage(@UploadedFile() file: Express.Multer.File,@Body() dto: NationalIDDto ) {
-    const result = this.userService.uploadNationalIdImage(dto,file); // Call the correct method from the userService
-    return {
-      statusCode: 200,
-      data: result,
-    };
+  uploadNationalIdImage(@UploadedFile(  new ParseFilePipe({
+    validators: [
+      new MaxFileSizeValidator({ maxSize: 200000 }),
+      new FileTypeValidator({ fileType: 'image/jpeg' }),
+    ],
+  })) file: Express.Multer.File,@Body() dto: NationalIDDto ) {
+    return this.userService.uploadNationalIdImage(dto,file); // Call the correct method from the userService
   }
-
   @Get('get-all-users')
   @ApiOperation({summary:"Get all users from this api"})
   @ApiResponse({status:200,description:"All users List "})

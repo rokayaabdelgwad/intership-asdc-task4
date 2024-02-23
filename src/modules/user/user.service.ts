@@ -57,20 +57,22 @@ export class UserService {
 
 
   async uploadNationalIdImage(dto: NationalIDDto,file: MemoryStorageFile) {
-      const filename = generateFilename(file.fieldname).toString();
+
+      const nationalIDImage = generateFilename(file.fieldname).toString();
       const nationalID=dto.nationalID.toString()
-      const uploadPath = path.join(__dirname, '..', 'uploads', 'img', filename);
-      // const user = await this.prisma.user.create({
-      //   data:{
-      //     nationalID,
+      const uploadPath = path.join(__dirname, '..', 'uploads', 'img', nationalIDImage);
+      const user = await this.prisma.user.create({
+        data:{
+          nationalID,
+          nationalIDImage
         
-      //   }
-      // })
+        }
+      })
       try {
           if (!fs.existsSync(path.dirname(uploadPath))) {
               fs.mkdirSync(path.dirname(uploadPath), { recursive: true });
           }     
-          return filename;
+          return nationalIDImage;
       } catch (error) {
           this.loggerService.logError(error);
           throw new InternalServerErrorException('Error upload profile picture ');
