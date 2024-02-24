@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
-  env: process.env.NODE_ENV,
+  env: process.env.test,
   db: {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -12,7 +12,7 @@ const config = {
     pass: process.env.DB_PASS,
   },
   server: {
-    port: Number(process.env.PORT) || 3001,
+    port: Number(process.env.PORT) || 3000,
   },
 };
 

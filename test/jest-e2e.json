@@ -1,9 +1,9 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
-  "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
-  "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
-  }
+  "preset": "ts-jest",
+  "testEnvironment": "babel-node",
+  "testMatch": ["**/*.spec.ts"],
+  "modulePathIgnorePatterns": ["<rootDir>/dist/"],
+  "setupFiles": [
+    "dotenv/config"
+  ]
 }

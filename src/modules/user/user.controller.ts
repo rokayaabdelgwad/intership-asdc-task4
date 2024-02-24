@@ -14,7 +14,7 @@ import {
   FileTypeValidator,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from './dto';
+import { UserDto } from './dto/user.auth.dto';
 import { UpdateUserDto } from './dto/user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -24,7 +24,7 @@ import { storageService } from '../storage/storage.service';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { User } from '@prisma/client';
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard) for  Authorized
 @ApiTags('Users')
 @Controller('users')
 export class UserController {

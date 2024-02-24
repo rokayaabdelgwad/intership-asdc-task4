@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as argon from 'argon2';
-import { UserDto } from './dto';
+import { UserDto } from './dto/user.auth.dto'; 
 import { User } from '@prisma/client';
 import { UpdateUserDto } from './dto/user.dto';
 import { CustomBadRequestException } from '../../utils/custom.exceptions';
